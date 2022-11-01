@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32929.385
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailApi", "MailApi\MailApi.csproj", "{30A41EA7-E368-41F8-A6BA-A3E87D3FA1A0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{660A0783-1AEA-4D89-AA4A-3937D4F539F1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{30A41EA7-E368-41F8-A6BA-A3E87D3FA1A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30A41EA7-E368-41F8-A6BA-A3E87D3FA1A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30A41EA7-E368-41F8-A6BA-A3E87D3FA1A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30A41EA7-E368-41F8-A6BA-A3E87D3FA1A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{660A0783-1AEA-4D89-AA4A-3937D4F539F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{660A0783-1AEA-4D89-AA4A-3937D4F539F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{660A0783-1AEA-4D89-AA4A-3937D4F539F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{660A0783-1AEA-4D89-AA4A-3937D4F539F1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0E385AA3-9815-4F69-9557-C67F43530848}
+	EndGlobalSection
+EndGlobal
