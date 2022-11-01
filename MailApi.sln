@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\Da
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailClientApp", "EmailClientApp\EmailClientApp.csproj", "{53273D33-EC25-45B0-A47D-707533C70786}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiTest", "ApiTest\ApiTest.csproj", "{2B52B724-946A-4AB3-8AAF-5441AEA0F2CE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{53273D33-EC25-45B0-A47D-707533C70786}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53273D33-EC25-45B0-A47D-707533C70786}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53273D33-EC25-45B0-A47D-707533C70786}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B52B724-946A-4AB3-8AAF-5441AEA0F2CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B52B724-946A-4AB3-8AAF-5441AEA0F2CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B52B724-946A-4AB3-8AAF-5441AEA0F2CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B52B724-946A-4AB3-8AAF-5441AEA0F2CE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
