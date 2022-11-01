@@ -1,0 +1,81 @@
+﻿@page "/fetchdata"
+
+<PageTitle>Weather forecast</PageTitle>
+
+@using EmailClientApp.Data
+@inject WeatherForecastService ForecastService
+@inject EmailService _emailService;
+
+<h1>Email Service</h1>
+
+<p>My email list</p>
+
+@if (lstEmails == null)
+{
+    <p><em>Loading emails...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Fisrt Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var email in lstEmails)
+            {
+                <tr>
+                    <td>@email.Id</td>
+                    <td>@email.FirstName</td>
+                    <td>@email.LastName</td>
+                    <td>@email.Email</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private WeatherForecast[]? forecasts;
+    private List<EmailModel> lstEmails;
+    private EmailModel currentEmail = new();
+
+    private async Task CreateEmail()
+    {
+        EmailModel emailModel = new EmailModel();
+        emailModel.Id = currentEmail.Id;
+        emailModel.FirstName = currentEmail.FirstName;
+        emailModel.LastName = currentEmail.LastName;
+        emailModel.Email = currentEmail.Email;
+
+        if (string.IsNullOrEmpty(emailModel.FirstName)){
+            return;
+        }
+
+        if (string.IsNullOrEmpty(emailModel.LastName))
+        {
+            return;
+        }
+
+        if (string.IsNullOrEmpty(emailModel.Email))
+        {
+            return;
+        }
+
+        await _emailService.CreateEmailAsync(emailModel);
+        currentEmail = new();
+        lstEmails = await _emailService.GetEmails();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+        lstEmails = await _emailService.GetEmails();
+    }
+
+    
+}

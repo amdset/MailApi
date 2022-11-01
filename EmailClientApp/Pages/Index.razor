@@ -1,0 +1,124 @@
+﻿@page "/"
+
+@using EmailClientApp.Data
+@inject WeatherForecastService ForecastService
+@inject EmailService _emailService;
+
+<h1>Email Service</h1>
+
+<p>Create your email list</p>
+
+<div>
+    <h2>Create new email</h2>
+    <EditForm Model="currentEmail" OnValidSubmit="CreateEmail">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="input-container">
+            <label>
+                First Name
+                <InputText @bind-Value="currentEmail.FirstName" InputText  @onfocus="Disablealert" />
+            </label>
+            <label>
+                Last Name
+                <InputText @bind-Value="currentEmail.LastName" InputText @onfocus="Disablealert" />
+            </label>
+            <label>
+                Email
+                <InputText @bind-Value="currentEmail.Email" InputText @onfocus="Disablealert" />
+            </label>
+            <div>
+                <button type="submit">Create</button>
+            </div>
+        </div>
+
+    </EditForm>
+    <div class="alert-primary" style="display:@display">
+        Email Created with success!
+    </div>
+</div>
+
+@if (lstEmails == null)
+{
+    <p><em>Loading emails...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Fisrt Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var email in lstEmails)
+            {
+                <tr>
+                    <td>@email.Id</td>
+                    <td>@email.FirstName</td>
+                    <td>@email.LastName</td>
+                    <td>@email.Email</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private WeatherForecast[]? forecasts;
+    private List<EmailModel> lstEmails;
+    private EmailModel currentEmail = new();
+    string display = "none";
+
+    private void Disablealert(){
+        display = "none";
+    }
+
+    private async void EnableAlert(){
+        display = "block";
+        await Task.Delay (4000);
+        display = "none";
+    }
+
+    private async Task CreateEmail()
+    {
+        EmailModel emailModel = new EmailModel();
+        emailModel.Id = currentEmail.Id;
+        emailModel.FirstName = currentEmail.FirstName;
+        emailModel.LastName = currentEmail.LastName;
+        emailModel.Email = currentEmail.Email;
+
+        if (string.IsNullOrEmpty(emailModel.FirstName))
+        {
+            return;
+        }
+
+        if (string.IsNullOrEmpty(emailModel.LastName))
+        {
+            return;
+        }
+
+        if (string.IsNullOrEmpty(emailModel.Email))
+        {
+            return;
+        }
+
+        var result =  await _emailService.CreateEmailAsync(emailModel);
+        if (result == 200) {
+            EnableAlert();
+        }
+        currentEmail = new();
+        lstEmails = await _emailService.GetEmails();
+
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+        lstEmails = await _emailService.GetEmails();
+    }
+
+   
+}
