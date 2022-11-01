@@ -30,7 +30,7 @@ namespace DataAccess.DataAccess
             }
             else
             {
-                emails = emails.OrderByDescending(e => e.LastName).ThenBy(e => e.FirstName).ToList();
+                emails = emails.OrderByDescending(e => e.LastName).ThenByDescending(e => e.FirstName).ToList();
             }
 
             return emails;

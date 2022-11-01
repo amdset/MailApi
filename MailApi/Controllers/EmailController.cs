@@ -26,10 +26,12 @@ namespace MailApi.Controllers
         }
 
         // GET api/<EmailController>/5
-        [HttpGet("{LastName}")]
-        public List<EmailModel> Get(string LastName=null)
+        [HttpGet("{LastName}/{Ascending}")]
+        public List<EmailModel> Get(string LastName="", string Ascending= "ascending")
         {
-            return _emailData.GetEmails(LastName);
+            Ascending = (Ascending ?? "").ToLower();
+            bool asc = Ascending == "ascending" || Ascending == "asc";
+            return _emailData.GetEmails(LastName,asc);
         }
 
         // POST api/<EmailController>
