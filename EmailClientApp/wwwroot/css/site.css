@@ -1,5 +1,10 @@
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
+*{
+    margin: 0;
+    padding:0;
+}
+
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
@@ -71,6 +76,19 @@ a, .btn-link {
     display: flex;
     flex-direction:column;
     gap:10px;
-    margin-left: 10px;
-    justify-content:center;
+    align-items:flex-start;
+    justify-content:flex-start;
+}
+
+.btn-delete{
+    border: none;
+}
+
+.label-input{
+    display:block;
+    width: 100px;
+}
+
+.label-input input{
+    width:300px;
 }

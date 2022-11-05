@@ -9,30 +9,31 @@
 
 <div>
     <h2>Create new email</h2>
-    <EditForm Model="currentEmail" OnValidSubmit="CreateEmail">
+    <EditForm Model="currentEmail" OnValidSubmit="CreateEmail" @onreset="CancelEditing">
         <DataAnnotationsValidator />
         <ValidationSummary />
         <div class="input-container">
-            <label>
+            <label class="label-input">
                 First Name
-                <InputText @bind-Value="currentEmail.FirstName" InputText  @onfocus="Disablealert" />
+                <InputText @bind-Value="currentEmail.FirstName" InputText @onfocus="Disablealert" />
             </label>
-            <label>
+            <label class="label-input">
                 Last Name
                 <InputText @bind-Value="currentEmail.LastName" InputText @onfocus="Disablealert" />
             </label>
-            <label>
+            <label class="label-input">
                 Email
                 <InputText @bind-Value="currentEmail.Email" InputText @onfocus="Disablealert" />
             </label>
             <div>
-                <button type="submit">Create</button>
+                <button class="btn btn-primary" type="submit">@txtBtn</button>
+                <button class="btn btn-secondary" type="reset">Cancel</button>
             </div>
         </div>
 
     </EditForm>
     <div class="alert-primary" style="display:@display">
-        Email Created with success!
+        Email @msgOperation with success!
     </div>
 </div>
 
@@ -42,23 +43,32 @@
 }
 else
 {
-    <table class="table">
+    <table class="table  table-hover">
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Fisrt Name</th>
                 <th>Last Name</th>
                 <th>Email</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var email in lstEmails)
             {
-                <tr>
+                <tr @onclick="()=> BeginEditing(email)">
                     <td>@email.Id</td>
                     <td>@email.FirstName</td>
                     <td>@email.LastName</td>
                     <td>@email.Email</td>
+                    <td>
+                        <button class="btn-delete" @onclick="()=>DeleteEmail(email.Id)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                            </svg>
+                        </button>
+                    </td>
                 </tr>
             }
         </tbody>
@@ -66,17 +76,23 @@ else
 }
 
 @code {
+    private string txtBtn = "Create";
+    private string msgOperation = "Created";
     private List<EmailModel> lstEmails;
     private EmailModel currentEmail = new();
     string display = "none";
 
-    private void Disablealert(){
+    //private EmailModel currentEmail = null;
+
+    private void Disablealert()
+    {
         display = "none";
     }
 
-    private async void EnableAlert(){
+    private async void EnableAlert()
+    {
         display = "block";
-        await Task.Delay (4000);
+        await Task.Delay(4000);
         display = "none";
     }
 
@@ -103,8 +119,23 @@ else
             return;
         }
 
-        var result =  await _emailService.CreateEmailAsync(emailModel);
-        if (result == 200) {
+        int result = 0;
+
+        if (emailModel.Id ==0)
+        {
+            msgOperation = "Created";
+            result = await _emailService.CreateEmailAsync(emailModel);
+        }
+        else
+        {
+            msgOperation = "Updated";
+            result =  (int)await _emailService.UpdateEmail(currentEmail.Id, emailModel);
+        }
+
+        txtBtn = "Create";
+
+        if (result == 200)
+        {
             EnableAlert();
         }
         currentEmail = new();
@@ -112,10 +143,43 @@ else
 
     }
 
+    private async Task DeleteEmail(int id)
+    {
+
+        //var emailToRemove = lstEmails.FirstOrDefault(e => e.Id == id);
+        //if (emailToRemove!=null)
+        //{
+        //    return lstEmails.Remove(emailToRemove);
+        //}
+        
+        var response = await _emailService.DeleteEmail(id);
+        if (response == System.Net.HttpStatusCode.OK)
+        {
+            lstEmails = await _emailService.GetEmails();
+        }
+        currentEmail = new();
+    }
+
+    private void BeginEditing(EmailModel email)
+    {
+        txtBtn = "Update";
+
+        currentEmail.LastName = email.LastName;
+        currentEmail.FirstName = email.FirstName;
+        currentEmail.Email = email.Email;
+        currentEmail.Id = email.Id;
+    }
+
+    private void CancelEditing()
+    {
+        txtBtn = "Create";
+        currentEmail = new();
+    }
+
     protected override async Task OnInitializedAsync()
     {
         lstEmails = await _emailService.GetEmails();
     }
 
-   
+
 }
