@@ -19,7 +19,7 @@ namespace MailApi.Controllers
 
 
         // GET: api/<EmailController>
-        [HttpGet]
+        [HttpGet(Name = nameof(Get))]
         public List<EmailModel> Get()
         {
             return _emailData.GetEmails();
