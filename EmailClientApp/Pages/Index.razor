@@ -1,7 +1,6 @@
 ﻿@page "/"
 
 @using EmailClientApp.Data
-@inject WeatherForecastService ForecastService
 @inject EmailService _emailService;
 
 <h1>Email Service</h1>
@@ -67,7 +66,6 @@ else
 }
 
 @code {
-    private WeatherForecast[]? forecasts;
     private List<EmailModel> lstEmails;
     private EmailModel currentEmail = new();
     string display = "none";
@@ -116,7 +114,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
         lstEmails = await _emailService.GetEmails();
     }
 

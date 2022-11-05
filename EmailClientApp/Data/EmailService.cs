@@ -5,12 +5,16 @@ namespace EmailClientApp.Data
     public class EmailService
     {
         HttpClient _httpClient = new HttpClient();
-        public EmailService()
+        IConfiguration _configuration;
+        public EmailService(IConfiguration configuration)
         {
-            _httpClient.BaseAddress = new Uri("https://emailapicoderslink.azurewebsites.net/");
+            _configuration = configuration;
+            var baseAdressAPI = _configuration.GetValue<string>("baseUrlApi");
+            _httpClient.BaseAddress = new Uri(baseAdressAPI);
             _httpClient.DefaultRequestHeaders.Accept.Add(
                 new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json")
                 );
+            _configuration=configuration;
         }
         public async Task<int> CreateEmailAsync(EmailModel email)
         {
