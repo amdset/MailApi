@@ -27,32 +27,38 @@ namespace MailApi.Controllers
 
         // GET api/<EmailController>/5
         [HttpGet("{LastName}/{Ascending}")]
-        public List<EmailModel> Get(string LastName="", string Ascending= "ascending")
+        public List<EmailModel> Get(string LastName = "", string Ascending = "ascending")
         {
             Ascending = (Ascending ?? "").ToLower();
             bool asc = Ascending == "ascending" || Ascending == "asc";
-            return _emailData.GetEmails(LastName,asc);
+            return _emailData.GetEmails(LastName, asc);
         }
 
         // POST api/<EmailController>
         [HttpPost]
         public void Post([FromBody] EmailModel emailModel)
         {
-            _emailData.CreateEmail(emailModel);
-            Ok();
+            var newEmail = _emailData.CreateEmail(emailModel);
+            Ok(newEmail);
         }
 
         // PUT api/<EmailController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public EmailModel Put(int id, [FromBody] EmailModel email)
         {
+            return _emailData.UpdateEmail(id, email);
         }
 
         // DELETE api/<EmailController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
-
+            bool res = _emailData.DeleteEmail(id);
+            if (res)
+            {
+                return Ok();
+            }
+            return NotFound(id);
         }
     }
 }
